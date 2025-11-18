@@ -13,8 +13,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 
@@ -29,9 +30,10 @@ import java.util.Random;
 public class BadIOGUI {
 
     private static final String TITLE = "A very simple GUI application";
-    private static final String PATH = System.getProperty("user.home")
-            + File.separator
-            + BadIOGUI.class.getSimpleName() + ".txt";
+    private static final Path PATH = Path.of(
+        System.getProperty("user.home"),
+        BadIOGUI.class.getSimpleName() + ".txt"
+    );
     private static final int PROPORTION = 5;
     private final Random randomGenerator = new Random();
     private final JFrame frame = new JFrame(TITLE);
@@ -41,9 +43,9 @@ public class BadIOGUI {
      */
     public BadIOGUI() {
         final JPanel canvas = new JPanel();
-        canvas.setLayout(new BorderLayout());
+        //canvas.setLayout(new BorderLayout());
         final JButton write = new JButton("Write on file");
-        canvas.add(write, BorderLayout.CENTER);
+        //canvas.add(write, BorderLayout.CENTER);
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //down is written by myself
@@ -66,9 +68,10 @@ public class BadIOGUI {
                  * operation. I/O operations may take a long time, during which
                  * your UI becomes completely unresponsive.
                  */
-                try (PrintStream ps = new PrintStream(PATH, StandardCharsets.UTF_8)) { //try with resources
-                    ps.print(randomGenerator.nextInt());
-                    System.out.println(randomGenerator.nextInt()); //NOPMD
+                try (PrintStream ps = new PrintStream(PATH.toString(), StandardCharsets.UTF_8)) { //try with resources
+                    final int amount = randomGenerator.nextInt();
+                    ps.print(amount);
+                    System.out.println(amount); //NOPMD
                 } catch (final IOException e) {
                     JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace(); // NOPMD: allowed as this is just an exercise
@@ -85,8 +88,9 @@ public class BadIOGUI {
                  * operation. I/O operations may take a long time, during which
                  * your UI becomes completely unresponsive.
                  */
-                try (PrintStream ps = new PrintStream(PATH, StandardCharsets.UTF_8)) { //try with resources
-                    System.out.println("read, your bank account: "+randomGenerator.nextInt()); //NOPMD
+                try {
+                    var lines = Files.readAllLines(PATH, StandardCharsets.UTF_8);
+                    System.out.println("read, your bank account: "+lines); //NOPMD
                 } catch (final IOException e) {
                     JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace(); // NOPMD: allowed as this is just an exercise
