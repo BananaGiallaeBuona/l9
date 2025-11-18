@@ -46,6 +46,13 @@ public class BadIOGUI {
         canvas.add(write, BorderLayout.CENTER);
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //down is written by myself
+        JPanel myPanel = new JPanel();
+        BoxLayout layout = new BoxLayout(myPanel, BoxLayout.X_AXIS);
+        JButton read = new JButton("read");
+        myPanel.add(write);
+        myPanel.add(read);
+        frame.setContentPane(myPanel);
         /*
          * Handlers
          */
@@ -59,17 +66,40 @@ public class BadIOGUI {
                  * operation. I/O operations may take a long time, during which
                  * your UI becomes completely unresponsive.
                  */
-                try (PrintStream ps = new PrintStream(PATH, StandardCharsets.UTF_8)) {
+                try (PrintStream ps = new PrintStream(PATH, StandardCharsets.UTF_8)) { //try with resources
                     ps.print(randomGenerator.nextInt());
+                    System.out.println(randomGenerator.nextInt()); //NOPMD
                 } catch (final IOException e) {
                     JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
         });
+        read.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent ignored) {
+                /*
+                 * This would be VERY BAD in a real application.
+                 *
+                 * This makes the Event Dispatch Thread (EDT) work on an I/O
+                 * operation. I/O operations may take a long time, during which
+                 * your UI becomes completely unresponsive.
+                 */
+                try (PrintStream ps = new PrintStream(PATH, StandardCharsets.UTF_8)) { //try with resources
+                    System.out.println("read, your bank account: "+randomGenerator.nextInt()); //NOPMD
+                } catch (final IOException e) {
+                    JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace(); // NOPMD: allowed as this is just an exercise
+                }
+            }
+        });
+
+
+            
     }
 
     private void display() {
+        frame.pack();
         /*
          * Make the frame one fifth the resolution of the screen. This very method is
          * enough for a single screen setup. In case of multiple monitors, the
@@ -78,10 +108,10 @@ public class BadIOGUI {
          * issue). It is MUCH better than manually specify the size of a window
          * in pixel: it takes into account the current resolution.
          */
-        final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        /*final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int sw = (int) screen.getWidth();
         final int sh = (int) screen.getHeight();
-        frame.setSize(sw / PROPORTION, sh / PROPORTION);
+        frame.setSize(sw / PROPORTION, sh / PROPORTION);*/
         /*
          * Instead of appearing at (0,0), upper left corner of the screen, this
          * flag makes the OS window manager take care of the default positioning
