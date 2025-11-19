@@ -6,13 +6,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
 
 /**
  * A very simple program using a graphical interface.
@@ -40,16 +38,16 @@ public final class SimpleGUIWithFileChooser {
         browseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent ignored) {
-                try { 
-                    final JFileChooser chooser = new JFileChooser();
-                    final int result = chooser.showSaveDialog(frame);
-                    if (result == JFileChooser.APPROVE_OPTION){
-                        controller.setFile(chooser.getSelectedFile());
-                        textField.setText(controller.getFileName());
-                    } else if (result == JFileChooser.CANCEL_OPTION) {}
-                } catch (final Exception e) {
-                    JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
-                    e.printStackTrace(); // NOPMD: allowed as this is just an exercise
+                final JFileChooser chooser = new JFileChooser();
+                final int result = chooser.showSaveDialog(frame);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    controller.setFile(chooser.getSelectedFile());
+                    textField.setText(controller.getFileName());
+                } else if (result == JFileChooser.CANCEL_OPTION) {
+                    //checkstyle ask to write something
+                    System.out.println("selection canceled"); //NOPMD
+                } else {
+                    JOptionPane.showMessageDialog(frame, "An error has occurred", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

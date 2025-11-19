@@ -18,7 +18,6 @@ public final class Controller {
 
     Controller() {
         this.file = DEFAULT_FILE;
-        this.file.getParentFile().mkdirs(); //this creates al the directory that doesn't already exists
     }
 
     /**
