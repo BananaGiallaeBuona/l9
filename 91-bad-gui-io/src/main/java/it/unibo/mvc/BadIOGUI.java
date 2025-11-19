@@ -1,22 +1,17 @@
 package it.unibo.mvc;
 
-import javax.swing.BoxLayout;
+//import javax.swing.BoxLayout; It isn't used
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -34,7 +29,7 @@ public class BadIOGUI {
         System.getProperty("user.home"),
         BadIOGUI.class.getSimpleName() + ".txt"
     );
-    private static final int PROPORTION = 5;
+    //private static final int PROPORTION = 5;
     private final Random randomGenerator = new Random();
     private final JFrame frame = new JFrame(TITLE);
 
@@ -49,9 +44,9 @@ public class BadIOGUI {
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //down is written by myself
-        JPanel myPanel = new JPanel();
-        BoxLayout layout = new BoxLayout(myPanel, BoxLayout.X_AXIS);
-        JButton read = new JButton("read");
+        final JPanel myPanel = new JPanel();
+        //final BoxLayout layout = new BoxLayout(myPanel, BoxLayout.X_AXIS); It isn't used
+        final JButton read = new JButton("read");
         myPanel.add(write);
         myPanel.add(read);
         frame.setContentPane(myPanel);
@@ -89,17 +84,14 @@ public class BadIOGUI {
                  * your UI becomes completely unresponsive.
                  */
                 try {
-                    var lines = Files.readAllLines(PATH, StandardCharsets.UTF_8);
-                    System.out.println("read, your bank account: "+lines); //NOPMD
+                    final var lines = Files.readAllLines(PATH, StandardCharsets.UTF_8);
+                    System.out.println("read, your bank account: " + lines); //NOPMD
                 } catch (final IOException e) {
                     JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
         });
-
-
-            
     }
 
     private void display() {
