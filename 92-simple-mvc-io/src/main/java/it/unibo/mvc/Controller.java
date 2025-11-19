@@ -10,16 +10,15 @@ import java.nio.file.Path;
  * Application controller. Performs the I/O.
  */
 public final class Controller {
-    private File file;
     private static final String SEP = System.getProperty("file.separator");
     private static final String PROJECT_ROOT = System.getProperty("user.dir");
     private static final File DEFAULT_FILE =
         new File(PROJECT_ROOT + SEP + "build" + SEP + "texts" + SEP + "output.txt");
+    private File file;
 
     Controller() {
         this.file = DEFAULT_FILE;
-        this.file.getParentFile().mkdirs(); //this creates al the directory that doesn't
-                                            //already exists
+        this.file.getParentFile().mkdirs(); //this creates al the directory that doesn't already exists
     }
 
     /**

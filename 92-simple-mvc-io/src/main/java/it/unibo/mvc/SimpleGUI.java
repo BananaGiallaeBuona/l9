@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
 
 /**
  * A very simple program using a graphical interface.
@@ -20,14 +20,14 @@ import java.awt.Dimension;
  */
 public final class SimpleGUI {
     private static Controller controller = new Controller();
-    private final static int PROPORTION = 5;
+    private static final int PROPORTION = 5;
     private static final String TITLE = "EX 92";
     private final JFrame frame = new JFrame(TITLE);
-    private  JTextArea text;
-    private  JButton saveButton;
+    private final JTextArea text;
+    private final JButton saveButton;
 
-    SimpleGUI(){
-        JPanel canvas = new JPanel(new BorderLayout());
+    SimpleGUI() {
+        final JPanel canvas = new JPanel(new BorderLayout());
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.text = new JTextArea("write here");
@@ -38,9 +38,9 @@ public final class SimpleGUI {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent ignored) {
-                try {
+                try { //TO DO RESOLVE THE CATCHING PROBLEM
                     controller.write(text.getText());
-                } catch (Exception e) {
+                } catch (final IOException e) {
                     JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
@@ -72,7 +72,13 @@ public final class SimpleGUI {
          */
         frame.setVisible(true);
     }
-    public static void main(String[] args) {
+
+    /**
+     * Launches the application.
+     *
+     * @param args the command line arguments
+     */
+    public static void main(final String[] args) {
         new SimpleGUI().display();
     }
 }
