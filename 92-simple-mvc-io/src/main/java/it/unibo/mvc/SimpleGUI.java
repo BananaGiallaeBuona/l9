@@ -1,8 +1,6 @@
 package it.unibo.mvc;
 
-//import it.unibo.mvc.Controller;
 import javax.swing.JFrame;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,12 +31,12 @@ public final class SimpleGUI {
         this.text = new JTextArea("write here");
         //controller.setFile(this.text);
         canvas.add(text, BorderLayout.CENTER);
-        this.saveButton = new JButton(new ImageIcon("src/test/resources/ex02.png"));
+        this.saveButton = new JButton("save");
         canvas.add(saveButton, BorderLayout.LINE_END);
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent ignored) {
-                try { //TO DO RESOLVE THE CATCHING PROBLEM
+                try { 
                     controller.write(text.getText());
                 } catch (final IOException e) {
                     JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);

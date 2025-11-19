@@ -49,6 +49,15 @@ public final class Controller {
     }
 
     /**
+     * gets the name of the file used for I/O operations.
+     *
+     * @return  the name of the file used for I/O operations.
+     */
+    public String getFileName() {
+        return this.file.getName();
+    }
+
+    /**
      * Writes the given content to the current file.
      * The content replaces any existing data in the file.
      *
