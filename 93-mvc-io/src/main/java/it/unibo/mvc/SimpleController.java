@@ -1,78 +1,45 @@
 package it.unibo.mvc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-/*
-TRASFORMO IN: current è l'ultima dentro strings, next è next e viene resa current venendo
- aggiunta quando la si stampa, se next viene chiamata next prioma di essere sostituita 
- allora viene cambiata senza problemi
-*/
-/**
- * 
- *
- */
+import java.util.Objects;
 
+/**
+ * Implementation of a simple controller.
+ */
 public final class SimpleController implements Controller {
-    private final List<String> strings;
+    private final List<String> history;
+    private String nextString;
 
     /**
      * Builds a new instance of SimpleController.
      */
-    SimpleController() {
-        strings = new ArrayList<>();
+    public SimpleController() {
+        history = new ArrayList<>();
     }
 
-    /**
-     * Sets the next string to print.
-     * 
-     * @param s the string to print
-     * 
-     * @throws IllegalAccessException if the string is null
-     */
-    public void setNextString(final String s) throws IllegalAccessException {
-        if (s != null) {
-            strings.addLast(s);
-        } else {
-            throw new IllegalAccessException("the string is null!!");
-        }
-    }
-
-    /**
-     * Prints the current string to the standard output.
-     * * @throws IllegalStateException if the current string is unset
-     */
     @Override
-    public void print() {
-        if (this.strings != null) {
-            System.out.println(strings.getLast()); //NOPMD
-        } else {
-            throw new IllegalStateException("there is no current");
-        }
+    public void setNextStringToPrint(final String nxtString) {
+        this.nextString = Objects.requireNonNull(nxtString, "The string cannot be null");
     }
 
-    /**
-     * Gets the next string to print.
-     * 
-     * @return the next string
-     */
-    public String getNexString() {
-        if (this.strings != null) {
-            return this.strings.getLast();
-        } else {
-            throw new IllegalStateException("there ins't already a next string");
-        }
+    @Override
+    public String getNextStringToPrint() {
+        return this.nextString;
     }
 
-    /**
-     * Gets the history of printed strings.
-     *
-     *  @return the list of printed strings
-     */
-    public List<String> getHistory() {
-        if (this.strings != null) {
-            return List.copyOf(this.strings);
-        } else {
-            throw new IllegalStateException("there is no history");
+    @Override
+    public List<String> getPrintedStringsHistory() {
+        return Collections.unmodifiableList(new ArrayList<>(this.history));
+    }
+
+    @Override
+    public void printCurrentString() {
+        if (this.nextString == null) {
+            throw new IllegalStateException("There isn't current string");
         }
+        System.out.println(this.nextString); //NOPMD
+        history.add(this.nextString);
     }
 }

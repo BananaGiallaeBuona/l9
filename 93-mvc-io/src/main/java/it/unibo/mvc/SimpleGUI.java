@@ -4,52 +4,79 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.List;
 
 /**
  * A very simple program using a graphical interface.
- *
  */
 public final class SimpleGUI {
-    private static SimpleController controller = new SimpleController();
+
     private static final int PROPORTION = 5;
-    private static final String TITLE = "EX 92";
+    private static final String TITLE = "EX 93";
     private final JFrame frame = new JFrame(TITLE);
+    private final Controller controller;
     private final JTextField text;
+    private final JTextArea textArea;
     private final JButton print;
     private final JButton showHistory;
 
-    SimpleGUI() {
+    /**
+     * Builds a new SimpleGUI.
+     */
+    public SimpleGUI() {
+        this.controller = new SimpleController();
         final JPanel canvas = new JPanel(new BorderLayout());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // 1. Upper part: Input (North)
         this.text = new JTextField("insert the string");
-        canvas.add(text, BorderLayout.CENTER);
-        this.print = new JButton("print");
-        this.showHistory = new JButton("show history");
-        //I MUST ADD A NEW FRAME WHERE I CAN PUT THE TWO BUTONS AND THEN ADD THEM TO THE END
+        canvas.add(text, BorderLayout.NORTH);
+
+        // 2. Center part: History Output (Center) - Added as required
+        this.textArea = new JTextArea();
+        this.textArea.setEditable(false);
+        canvas.add(textArea, BorderLayout.CENTER);
+
+        // 3. Lower part: Buttons
+        this.print = new JButton("Print");
+        this.showHistory = new JButton("Show history");
+
+        // Keeping your style: a panel with BorderLayout for buttons
         final JPanel buttonsJPanel = new JPanel(new BorderLayout());
         buttonsJPanel.add(showHistory, BorderLayout.EAST);
         buttonsJPanel.add(print, BorderLayout.WEST);
         canvas.add(buttonsJPanel, BorderLayout.PAGE_END);
+
         frame.setContentPane(canvas);
+
+        /*
+         * Handlers
+         */
         showHistory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.out.println("the history is:"); //NOPMD
-                System.out.println(controller.getHistory()); //NOPMD
+                final List<String> history = controller.getPrintedStringsHistory();
+                final StringBuilder sb = new StringBuilder();
+                for (final String s : history) {
+                    sb.append(s).append('\n'); //doing this to not have robelms with PMD
+                }
+                textArea.setText(sb.toString());
             }
         });
+
         print.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 try {
-                    controller.setNextString(text.getText());
-                    controller.print();
-                } catch (final IllegalAccessException exception) {
+                    controller.setNextStringToPrint(text.getText());
+                    controller.printCurrentString();
+                } catch (final IllegalStateException exception) {
                     exception.printStackTrace(); //NOPMD
                 }
             }
