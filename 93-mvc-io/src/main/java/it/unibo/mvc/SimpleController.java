@@ -13,7 +13,6 @@ TRASFORMO IN: current è l'ultima dentro strings, next è next e viene resa curr
  */
 
 public final class SimpleController implements Controller {
-    private String nextString;
     private final List<String> strings;
 
     /**
@@ -32,7 +31,7 @@ public final class SimpleController implements Controller {
      */
     public void setNextString(final String s) throws IllegalAccessException {
         if (s != null) {
-            nextString = s;
+            strings.addLast(s);
         } else {
             throw new IllegalAccessException("the string is null!!");
         }
@@ -58,7 +57,7 @@ public final class SimpleController implements Controller {
      */
     public String getNexString() {
         if (this.strings != null) {
-            return this.nextString;
+            return this.strings.getLast();
         } else {
             throw new IllegalStateException("there ins't already a next string");
         }
@@ -69,9 +68,9 @@ public final class SimpleController implements Controller {
      *
      *  @return the list of printed strings
      */
-    public List<String> getHIstory() {
+    public List<String> getHistory() {
         if (this.strings != null) {
-            return this.strings;
+            return List.copyOf(this.strings);
         } else {
             throw new IllegalStateException("there is no history");
         }
